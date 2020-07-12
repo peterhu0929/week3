@@ -21,6 +21,7 @@
       <table class="table mt-4">
         <thead>
           <tr>
+            <!-- <th>No.</th> -->
             <th>分類</th>
             <th>產品名稱</th>
             <th>原價</th>
@@ -31,14 +32,15 @@
         </thead>
         <tbody>
           <tr v-for="(item,key) in products" :key="item.id">
+            <!-- <td>{{key+1}}</td> -->
             <td>{{item.category}}</td>
             <td>{{item.title}}</td>
             <td>{{item.origin_price}}</td>
             <td>{{item.price}}</td>
             <td>
               <input type="checkbox" v-model="item.is_enabled" disabled />
-              <span v-if="item.is_enabled">Y</span>
-              <span v-else>N</span>
+              <span v-if="item.is_enabled" style="color: green;">啟用</span>
+              <span v-else>停用</span>
             </td>
             <td>
               <button
@@ -65,8 +67,14 @@
         aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
-            <div class="modal-header bg-info">
+            <!-- <div class="modal-header bg-info">
               <h5 class="modal-title" id="exampleModalLabel">新增產品</h5>
+            </div> -->
+            <div v-if="!metaProduct.id" class="modal-header bg-info">
+              <h5 class="modal-title" id="exampleModalLabel">新增產品</h5>
+            </div>
+            <div v-if="metaProduct.id" class="modal-header bg-warning">
+              <h5 class="modal-title" id="exampleModalLabel">編輯產品</h5>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -75,13 +83,13 @@
                     <label for="imageUrl">輸入圖片網址</label>
                     <input
                       id="imageUrl"
-                      v-model="addProduct.imageUrl"
+                      v-model="metaProduct.imageUrl"
                       type="text"
                       class="form-control"
                       placeholder="請輸入圖片連結"
                     />
                   </div>
-                  <img class="img-fluid" :src="addProduct.imageUrl" alt />
+                  <img class="img-fluid" :src="metaProduct.imageUrl" alt />
                 </div>
                 <div class="col-sm-8">
                   <div class="form-row">
@@ -89,7 +97,7 @@
                       <label for="title">產品名稱</label>
                       <input
                         id="title"
-                        v-model="addProduct.title"
+                        v-model="metaProduct.title"
                         type="text"
                         class="form-control"
                         placeholder="請輸入名稱"
@@ -101,7 +109,7 @@
                       <label for="category">分類</label>
                       <input
                         id="category"
-                        v-model="addProduct.category"
+                        v-model="metaProduct.category"
                         type="text"
                         class="form-control"
                         placeholder="請輸入分類"
@@ -112,7 +120,7 @@
                       <label for="unit">單位</label>
                       <input
                         id="unit"
-                        v-model="addProduct.unit"
+                        v-model="metaProduct.unit"
                         type="text"
                         class="form-control"
                         placeholder="請輸入分類"
@@ -122,7 +130,7 @@
                       <label for="is_enabled">啟用(Y/N)</label>
                       <input
                         id="is_enabled"
-                        v-model="addProduct.is_enabled"
+                        v-model="metaProduct.is_enabled"
                         type="checkbox"
                         class="form-control"
                         placeholder="是否啟用"
@@ -135,7 +143,7 @@
                       <label for="origin_price">原價</label>
                       <input
                         id="origin_price"
-                        v-model="addProduct.origin_price"
+                        v-model="metaProduct.origin_price"
                         type="number"
                         class="form-control"
                         placeholder="請輸入原價"
@@ -146,7 +154,7 @@
                       <label for="price">售價</label>
                       <input
                         id="price"
-                        v-model="addProduct.price"
+                        v-model="metaProduct.price"
                         type="number"
                         class="form-control"
                         placeholder="請輸入售價"
@@ -158,7 +166,7 @@
                       <label for="description">產品描述</label>
                       <input
                         id="description"
-                        v-model="addProduct.description"
+                        v-model="metaProduct.description"
                         type="text"
                         class="form-control"
                         placeholder="請輸入產品描述"
@@ -169,7 +177,7 @@
                       <label for="content">產品內容</label>
                       <input
                         id="content"
-                        v-model="addProduct.content"
+                        v-model="metaProduct.content"
                         type="text"
                         class="form-control"
                         placeholder="請輸入產品內容"
@@ -187,7 +195,8 @@
               >
                 取消
               </button>
-              <button type="button" class="btn btn-primary" @click="toAddProduct(addProduct)">新增</button>
+              <button type="button" v-if="!metaProduct.id" class="btn btn-primary" @click="addProduct(metaProduct)">新增</button>
+              <button type="button"v-if="metaProduct.id" class="btn btn-warning" @click="updateProduct(metaProduct)">修改</button>
             </div>
           </div>
         </div>
@@ -202,11 +211,11 @@
         </button>
       </div>
       <div class="modal-body">
-       <h4>確定刪除<strong>{{addProduct.title}}</strong>嗎?</h4>
+       <h4>確定刪除<strong>{{metaProduct.title}}</strong>嗎?</h4>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" @click="deleteProduct(addProduct)">確定</button>
+        <button type="button" class="btn btn-danger" @click="deleteProduct(metaProduct)">確定刪除</button>
       </div>
     </div>
   </div>

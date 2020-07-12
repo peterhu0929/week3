@@ -30,23 +30,24 @@ new Vue({
           "https://images.unsplash.com/photo-1576858574144-9ae1ebcf5ae5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1934&q=80",
       },
     ],
-    addProduct: {},
+    metaProduct: {},
   },
   methods: {
     openModal(action, item) {
       switch (action) {
         case "isAdd": {
-          this.addProduct = {};
+          this.metaProduct = {};
           $("#productModal").modal("show");
           break;
         }
         case "isEdit": {
-          this.addProduct = JSON.parse(JSON.stringify(item));
+          this.metaProduct = JSON.parse(JSON.stringify(item));
           $("#productModal").modal("show", item);
+          //  this.isSeleced = true;
           break;
         }
         case "isDelete": {
-          this.addProduct = JSON.parse(JSON.stringify(item));
+          this.metaProduct = JSON.parse(JSON.stringify(item));
           $("#deleteModal").modal("show");
           break;
         }
@@ -54,11 +55,20 @@ new Vue({
           break;
       }
     },
-    toAddProduct(item) {
-        item.id = Date.now();
-        this.products.unshift(item);
-        console.log(item);
-        $("#productModal").modal("hide");
+    addProduct(item) {
+      item.id = Date.now();
+      this.products.unshift(item);
+      console.log(item);
+      $("#productModal").modal("hide");
+    },
+    updateProduct(item) {
+      this.products.forEach((x, i) => {
+        if (x.id === item.id) {
+          this.products.splice(i, 1,item);
+        }
+      });
+      console.log(item);
+      $("#productModal").modal("hide");
     },
     deleteProduct(item) {
       if (item.id) {
