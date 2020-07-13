@@ -12,9 +12,9 @@
     <title>第三周主線任務</title>
   </head>
   <body>
-    <!-- <button id="get" class="btn btn-primary">Get</button> -->
+   
     <div id="app">
-      <!-- {{message}} -->
+      <h3 class="title">{{message}}</h3>
       <button class="btn btn-primary btn-lg" style="float: right;" @click="openModal('isAdd')">
         新增產品
       </button>
@@ -27,6 +27,7 @@
             <th>原價</th>
             <th>售價</th>
             <th>啟用(Y/N)</th>
+            <th>點評</th>
             <th>編輯</th>
           </tr>
         </thead>
@@ -41,6 +42,13 @@
               <input type="checkbox" v-model="item.is_enabled" disabled />
               <span v-if="item.is_enabled" style="color: green;">啟用</span>
               <span v-else>停用</span>
+            </td>
+            <td>
+                <button
+                class="btn btn-success btn-sm"
+                @click="openModal('isOptions',item)">
+                評價
+              </button>
             </td>
             <td>
               <button
@@ -201,8 +209,9 @@
           </div>
         </div>
       </div>
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+      <div class="modal fade" id="deleteModal"  
+      tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-danger">
         <h5 class="modal-title" id="exampleModalLabel" >刪除產品</h5>
@@ -219,7 +228,26 @@
       </div>
     </div>
   </div>
-</div>
+      </div>
+      <div class="modal fade" id="optionsModal"  
+      tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h5 class="modal-title" id="exampleModalLabel" >評語</h5>
+      </div>
+      <div class="modal-body" v-for="obj in metaProduct.options">
+       <!-- <h4>{{metaProduct.options.stars}}</h4>
+       <h4>{{metaProduct.options.comment}}</h4> -->
+       <h4>{{obj}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-success" >確定</button>
+      </div>
+    </div>
+  </div>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
